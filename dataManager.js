@@ -47,6 +47,7 @@ function inserisciOrdine(data){
     var primo, secondo, contorno, dolce;
     var id = piattiOrdinati[0].id;
     var pasto = piattiOrdinati[0].pasto;
+    var trovato = false;
     for(var i = 0; i < piattiOrdinati.length; i++){
         switch(piattiOrdinati[i].tipo){
             case 'primo':       primo = piattiOrdinati[i].nome;
@@ -60,7 +61,21 @@ function inserisciOrdine(data){
             default:            break;
         }
     }
-    ordine.push(new Ordine(id, data, pasto, primo, secondo, contorno, dolce));
+    
+    var temp =new Ordine(id, data, pasto, primo, secondo, contorno, dolce);
+    
+    for(var i = 0; i < ordine.length; i++){
+        if(temp.data == ordine[i].data && temp.pasto == ordine[i].pasto && temp.id == ordine[i].id){
+            trovato = true;
+            ordine [i].primo = temp.primo;
+            ordine [i].secondo = temp.secondo;
+            ordine [i].contorno = temp.contorno;
+            ordine [i].dolce = temp.dolce;
+        }
+    }
+    
+    if (!trovato)
+        ordine.push(temp);
 }
 
 // crea un nuovo piatto con un nome, un url a una foto e un attributo che indica che tipo di piatto è (primo, seconodo, contorno o dolce)
