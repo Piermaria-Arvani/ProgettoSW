@@ -1,7 +1,3 @@
-
-
-//var primi = [ "Pasta al pomodoro","Canederli", "Minestrina", "Brodo di verdura"];
-
 var primi =[
             new Piatto ("Pasta al pomodoro", "./foto/spaghetti-al-pomodoro.jpg", "primo"),
             new Piatto ("Canederli", "./foto/canederli.jpg", "primo"),
@@ -120,7 +116,6 @@ function ordinaPiatto (id, index, tipo,pasto){
 function getPrimi (){
     return primi;
 }
-
 function getSecondi (){
     return secondi;
 }
@@ -130,12 +125,49 @@ function getContorni (){
 function getDolci (){
     return dolci;
 }
+
 function getPiattiOrdinati(){
     return piattiOrdinati;
 }
 function getOrdine(){
     return ordine;
 }
+
+
+var nome_giorni = ['Domenica', 'Lunedi','Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+
+function followingDay (day, n){
+    var date = new Date(day);
+    date.setDate(day.getDate()+n);
+    return date;
+}
+
+function getNextDays( user_id, today , n){
+    var giorni = [];
+    
+    giorni.push({
+        nome: nome_giorni[today.getDay()],
+        day: today.getDate(),
+        month: today.getMonth()+1,
+        year: today.getYear(),
+        //class: (getOrders(user_id,today)== null)? "btn-default" : "btn-success"  colora il bottone
+    });
+    
+    for(var i = 1; i < n; i++){
+        var date = followingDay(today,i);
+        
+        giorni.push({
+        nome: nome_giorni[date.getDay()],
+        day: date.getDate(),
+        month: date.getMonth()+1,
+        year: date.getYear(),
+        //class: (getOrders(user_id,today)== null)? "btn-default" : "btn-success"  colora il bottone
+    });
+    }
+    
+    return giorni;
+}
+
 
 exports.ordinaPiatto = ordinaPiatto;
 exports.getPrimi = getPrimi;
@@ -145,4 +177,5 @@ exports.getDolci = getDolci;
 exports.getPiattiOrdinati = getPiattiOrdinati;
 exports.getOrdine = getOrdine;
 exports.inserisciOrdine = inserisciOrdine;
+exports.getNextDays = getNextDays;
 

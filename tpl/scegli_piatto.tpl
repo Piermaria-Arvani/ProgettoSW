@@ -20,8 +20,8 @@
 
             <form method="POST" method="POST" action="http://127.0.0.1:1337/scegli_portata" > 
                 <input type="hidden" name="id" value="2">
-                <input type="hidden" name="tipo" value="(:tipo:)">
-                <input type = "hidden" name ="pasto" value="(:pasto:)">
+                <input type="hidden" name="tipo" value="(: tipo :)">
+                <input type = "hidden" name ="pasto" value="(: pasto :)">
                 <div style="background-color: burlywood ">
                     <img src="(: piatto1 ~ [: foto :] :)" alt="(: piatto1 ~ [: nome :] :)"><br>
                     <label style="font-size: 200%;">(: piatto1 ~ [: nome :] :)</label>

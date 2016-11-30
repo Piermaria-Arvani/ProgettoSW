@@ -23,9 +23,7 @@ app.use('/scripts', express.static(__dirname+'/scripts/'));
 app.use('/foto', express.static(__dirname + '/foto/'));
 app.use('/styles/',express.static(__dirname + '/styles'));
 
-
-//mostra i piatti disponibili per una determinata tipologia (primi,secondi..) e ne fa scegliere uno.
-app.use('/scegli_piatto', function(request, response){
+function headers(){
     var headers = {};
     headers["Access-Control-Allow-Origin"] = "*"; //accetta richieste sia da node.js che da javascript
     headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";//methods allowed to responce
@@ -33,6 +31,12 @@ app.use('/scegli_piatto', function(request, response){
     headers["Access-Control-Max-Age"] = '86400'; // 24 hours
     headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"; //type of headers
     headers["Content-Type"] = "text/html";
+    
+    return headers;
+}
+
+//mostra i piatti disponibili per una determinata tipologia (primi,secondi..) e ne fa scegliere uno.
+app.use('/scegli_piatto', function(request, response){
     var id;
     var piatto1;
     var piatto2;
@@ -40,6 +44,7 @@ app.use('/scegli_piatto', function(request, response){
     var piatto4;
     var tipo;
     var pasto = request.body.pasto;
+    console.log(request.body);
     switch(request.body.submit){
         case 'PRIMI':       var primi = data.getPrimi();
                             piatto1 = primi [0];
@@ -78,7 +83,7 @@ app.use('/scegli_piatto', function(request, response){
     //bind to template
     bind.toFile('tpl/scegli_piatto.tpl', {piatto1, piatto2, piatto3, piatto4, tipo, pasto}  , 
         function(d){
-            response.writeHead(200, headers);
+            response.writeHead(200, headers());
             response.end(d);
         }
     );
@@ -88,28 +93,24 @@ app.use('/scegli_piatto', function(request, response){
 
 //mostra le portate e fa accederdere alle varie sezioni specifiche
 app.use('/scegli_portata', function(request, response){
-	var headers = {};
-    headers["Access-Control-Allow-Origin"] = "*"; //accetta richieste sia da node.js che da javascript
-    headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";//methods allowed to responce
-    headers["Access-Control-Allow-Credentials"] = false;
-    headers["Access-Control-Max-Age"] = '86400'; // 24 hours
-    headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"; //type of headers
-    headers["Content-Type"] = "text/html";
     var pasto;
     
     if(request.body.submit == 'PRANZO' || request.body.submit == 'CENA'){
-        var pasto = request.body.submit ;
+        pasto = request.body.submit ;
+    }else{
+        pasto = request.body.pasto ;
     }
     
-    if(request.body.submit == 'CONFERMA'){
-        data.ordinaPiatto ( request.body.id, ((request.body.piatto) -1), request.body.tipo, request.body.pasto);
-        //console.log(data.getPiattiOrdinati());
+    if ( typeof request.body !== 'undefined' && request.body && request.body.piatto){
+        if(request.body.submit == 'CONFERMA'){
+            data.ordinaPiatto ( request.body.id, ((request.body.piatto) -1), request.body.tipo, request.body.pasto);
+        }
     }
     
     //bind to template
 	bind.toFile('tpl/scegli_portata.tpl', {pasto}  , 
 		function(d){
-			response.writeHead(200, headers);
+			response.writeHead(200, headers());
 			response.end(d);
 		}
 	);
@@ -117,14 +118,7 @@ app.use('/scegli_portata', function(request, response){
 
 
 //fa scegliere tra pranzo e cena
-app.use('/', function(request, response){
-	var headers = {};
-    headers["Access-Control-Allow-Origin"] = "*"; //accetta richieste sia da node.js che da javascript
-    headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";//methods allowed to responce
-    headers["Access-Control-Allow-Credentials"] = false;
-    headers["Access-Control-Max-Age"] = '86400'; // 24 hours
-    headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"; //type of headers
-    headers["Content-Type"] = "text/html";
+app.use('/pranzo_cena', function(request, response){
     
     if(request.body.submit == 'CONFERMA'){
         data.inserisciOrdine("29/11/16");
@@ -134,7 +128,21 @@ app.use('/', function(request, response){
     //bind to template
 	bind.toFile('tpl/pranzo_cena.tpl', {}  , 
 		function(d){
-			response.writeHead(200, headers);
+			response.writeHead(200, headers());
+			response.end(d);
+		}
+	);
+});
+
+
+app.use('/', function(request, response){
+	var id = 2;
+    var days = data.getNextDays(id, new Date(), 6);
+    
+    //bind to template
+	bind.toFile('tpl/scegli_data.tpl', {days:days}  , 
+		function(d){
+			response.writeHead(200, headers());
 			response.end(d);
 		}
 	);
