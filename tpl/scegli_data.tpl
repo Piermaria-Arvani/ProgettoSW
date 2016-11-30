@@ -14,9 +14,10 @@
                 <div>
                     <label style="font-size: 250%">Scegli una data</label>
                 </div>
+                
                 (: days ~
                     <div>
-                        <form method="POST" method="POST" action="http://127.0.0.1:1337/pranzo_cena" > 
+                        <form method="POST" action="/pranzo_cena" > 
                             <input type="hidden" name="year" value="[: year :]">
                             <input type="hidden" name="month" value="[: month :]">
                             <input type="hidden" name="day" value="[:day:]">

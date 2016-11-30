@@ -15,27 +15,27 @@
                     <label style="font-size: 250%">Prenota le portate</label>
                 </div>
                 
-                <form method="POST" action="http://127.0.0.1:1337/scegli_piatto" >
+                <form method="POST" action="/scegli_piatto" >
                     <input type = "submit" class = "btn btn-default" value = "PRIMI" name = "submit" id="bottone">
                     <input type = "hidden" name ="pasto" value="(: pasto :)">
                 </form>
                 
-                <form method="POST" action="http://127.0.0.1:1337/scegli_piatto" >
+                <form method="POST" action="/scegli_piatto" >
                     <input type ="submit" class="btn btn-default" value = "SECONDI" name = "submit" id="bottone">
                     <input type = "hidden" name ="pasto" value="(: pasto :)">
                 </form>
 
-                <form method="POST" action="http://127.0.0.1:1337/scegli_piatto" >
+                <form method="POST" action="/scegli_piatto" >
                     <input type ="submit" class="btn btn-default" value = "CONTORNI" name = "submit" id="bottone">
                     <input type = "hidden" name ="pasto" value="(: pasto :)">
                 </form>
 
-                <form method="POST" action="http://127.0.0.1:1337/scegli_piatto" >
+                <form method="POST" action="/scegli_piatto" >
                     <input type ="submit" class="btn btn-default" value = "DOLCI" name = "submit" id="bottone">
                     <input type = "hidden" name ="pasto" value="(: pasto :)">
                 </form>
                 
-                <form method="POST" action="http://127.0.0.1:1337/pranzo_cena">
+                <form method="POST" action="/pranzo_cena">
                     <input type ="submit" class="btn btn-default" value = "CONFERMA" name = "submit" id="bottone_conferma" >
                 </form>
             </div>  

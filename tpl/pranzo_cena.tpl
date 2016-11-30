@@ -11,10 +11,10 @@
     <body>
         <div class="container col-md-6 col-md-offset-3" style = "text-align: center">
             <div class="jumbotron"> 
-                <form method="POST" action="http://127.0.0.1:1337/scegli_portata" >
+                <form method="POST" action="/scegli_portata" >
                     <input type ="submit" class="btn btn-default" value = "PRANZO" name = "submit" id="bottone">
                 </form>
-                <form method="POST" action="http://127.0.0.1:1337/scegli_portata" >
+                <form method="POST" action="/scegli_portata" >
                     <input type ="submit" class="btn btn-default" value = "CENA" name = "submit" id="bottone" >
                 </form>
                 
