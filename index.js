@@ -9,7 +9,7 @@ var app = express();
 //templates
 var bind = require('bind');
 //gestione dei dati
-var data = require('./dataManager.js');
+var manager = require('./dataManager.js');
 
 var bodyParser = require('body-parser');
 
@@ -36,17 +36,17 @@ function headers(){
 }
 
 //mostra i piatti disponibili per una determinata tipologia (primi,secondi..) e ne fa scegliere uno.
-app.use('/scegli_piatto', function(request, response){
-    var id;
-    var piatto1;
+app.use('/scegli_piatto', function(request, response){var piatto1;
     var piatto2;
     var piatto3;
     var piatto4;
     var tipo;
     var pasto = request.body.pasto;
-    console.log(request.body);
+    var data = request.body.data;
+    var id = request.body.id;                                              
+    
     switch(request.body.submit){
-        case 'PRIMI':       var primi = data.getPrimi();
+        case 'PRIMI':       var primi = manager.getPrimi();
                             piatto1 = primi [0];
                             piatto2 = primi [1];
                             piatto3 = primi [2];
@@ -54,7 +54,7 @@ app.use('/scegli_piatto', function(request, response){
                             tipo = 'primo';
                             break;
         
-        case 'SECONDI':     var secondi = data.getSecondi();
+        case 'SECONDI':     var secondi = manager.getSecondi();
                             piatto1 = secondi [0];
                             piatto2 = secondi [1];
                             piatto3 = secondi [2];
@@ -62,7 +62,7 @@ app.use('/scegli_piatto', function(request, response){
                             tipo = 'secondo';
                             break;
         
-        case 'CONTORNI':    var contorni = data.getContorni();
+        case 'CONTORNI':    var contorni = manager.getContorni();
                             piatto1 = contorni [0];
                             piatto2 = contorni [1];
                             piatto3 = contorni [2];
@@ -70,7 +70,7 @@ app.use('/scegli_piatto', function(request, response){
                             tipo = 'contorno';   
                             break;
         
-        case 'DOLCI':       var dolci = data.getDolci();
+        case 'DOLCI':       var dolci = manager.getDolci();
                             piatto1 = dolci [0];
                             piatto2 = dolci [1];
                             piatto3 = dolci [2];
@@ -81,7 +81,7 @@ app.use('/scegli_piatto', function(request, response){
     }
     
     //bind to template
-    bind.toFile('tpl/scegli_piatto.tpl', {piatto1, piatto2, piatto3, piatto4, tipo, pasto}  , 
+    bind.toFile('tpl/scegli_piatto.tpl', {piatto1, piatto2, piatto3, piatto4, tipo, pasto, data, id}  , 
         function(d){
             response.writeHead(200, headers());
             response.end(d);
@@ -94,7 +94,8 @@ app.use('/scegli_piatto', function(request, response){
 //mostra le portate e fa accederdere alle varie sezioni specifiche
 app.use('/scegli_portata', function(request, response){
     var pasto;
-    
+    var id = request.body.id;
+    var data = request.body.data;
     if(request.body.submit == 'PRANZO' || request.body.submit == 'CENA'){
         pasto = request.body.submit ;
     }else{
@@ -103,12 +104,12 @@ app.use('/scegli_portata', function(request, response){
     
     if ( typeof request.body !== 'undefined' && request.body && request.body.piatto){
         if(request.body.submit == 'CONFERMA'){
-            data.ordinaPiatto ( request.body.id, ((request.body.piatto) -1), request.body.tipo, request.body.pasto);
+            manager.ordinaPiatto (((request.body.piatto) -1), request.body.tipo, pasto, id , data);
         }
     }
-    
+   
     //bind to template
-	bind.toFile('tpl/scegli_portata.tpl', {pasto}  , 
+	bind.toFile('tpl/scegli_portata.tpl', {pasto, data, id}, 
 		function(d){
 			response.writeHead(200, headers());
 			response.end(d);
@@ -119,14 +120,19 @@ app.use('/scegli_portata', function(request, response){
 
 //fa scegliere tra pranzo e cena
 app.use('/pranzo_cena', function(request, response){
+    var id = request.body.id;
+    var data;
     
     if(request.body.submit == 'CONFERMA'){
-        data.inserisciOrdine("29/11/16");
-        console.log(data.getOrdine());
+        manager.inserisciOrdine(data, id);
+        console.log(manager.getOrdine());
+        
     }
-    
+    else{
+        var data = request.body.submit;
+    }
     //bind to template
-	bind.toFile('tpl/pranzo_cena.tpl', {}  , 
+	bind.toFile('tpl/pranzo_cena.tpl', {id, data}  , 
 		function(d){
 			response.writeHead(200, headers());
 			response.end(d);
@@ -136,11 +142,12 @@ app.use('/pranzo_cena', function(request, response){
 
 
 app.use('/', function(request, response){
-	var id = 2;
-    var days = data.getNextDays(id, new Date(), 6);
+	var id = request.body.id;
+    var giorni = manager.getNextDays(id, new Date(), 6);
+    
     
     //bind to template
-	bind.toFile('tpl/scegli_data.tpl', {days:days}  , 
+	bind.toFile('tpl/scegli_data.tpl', {giorni:giorni}  , 
 		function(d){
 			response.writeHead(200, headers());
 			response.end(d);

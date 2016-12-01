@@ -1,0 +1,25 @@
+{
+  "name": "progetto",
+  "version": "1.0.0",
+  "description": "sviluppo feature per ordinare piatti",
+  "main": "index.js",
+  "dependencies": {
+    "bind": "^0.1.7",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RefPier/ProgettoSW.git"
+  },
+  "author": "Piermaria Arvani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RefPier/ProgettoSW/issues"
+  },
+  "homepage": "https://github.com/RefPier/ProgettoSW#readme"
+}

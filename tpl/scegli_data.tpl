@@ -15,13 +15,14 @@
                     <label style="font-size: 250%">Scegli una data</label>
                 </div>
                 
-                (: days ~
+                (: giorni ~
                     <div>
                         <form method="POST" action="/pranzo_cena" > 
+                            <input type="hidden" name="id" value="2">
                             <input type="hidden" name="year" value="[: year :]">
                             <input type="hidden" name="month" value="[: month :]">
                             <input type="hidden" name="day" value="[:day:]">
-                             <input type ="submit" class="btn btn-default" value = "[: nome :] [: day :] - [: month :]" name = "submit" id="bottone">
+                             <input type ="submit" class="btn btn-default" value = "[: nome :] [: day :]/[: month :]" name = "submit" id="bottone">
                         </form>
                     </div>
                 :)

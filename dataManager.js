@@ -29,6 +29,23 @@ var dolci =[
 var piattiOrdinati = [];
 var ordine = [];
 
+//  piatto con un nome, un url a una foto e un attributo che indica che tipo di piatto è (primo, seconodo, contorno o dolce)
+function Piatto (nome, foto, tipo) {
+	this.nome = nome;
+	this.foto = foto;
+    this.tipo = tipo;
+}
+
+/*piatt0 ordinato con ID di chi lo ha ordinato, la data per cui è sato ordinato, il nome del piatto ordinato e un attributo che indica che tipo di piatto è (primo, seconodo, contorno o    dolce) */
+function piattoOrdinato (nome, tipo, pasto, id , data){
+    this.nome = nome;
+    this.tipo = tipo;
+    this.pasto = pasto;
+    this.id = id;
+    this.data = data;
+}
+
+/* ordine definitivo  */
 function Ordine (id, data, pasto, primo, secondo, contorno, dolce){
     this.id = id;
     this.data = data;
@@ -39,22 +56,50 @@ function Ordine (id, data, pasto, primo, secondo, contorno, dolce){
     this.dolce = dolce;
 }
 
-function inserisciOrdine(data){
+
+/*inserisce un piatto ordinato in piattiOrdinati */
+function ordinaPiatto (index, tipo, pasto, id , data){
+    var nuovoPiatto = new piattoOrdinato ("","","","", "", "");
+    var cambiato = false;
+    switch(tipo){
+        case 'primo':       nuovoPiatto = new piattoOrdinato (primi [index].nome, tipo, pasto, id , data );
+                            break;
+        case 'secondo':     nuovoPiatto = new piattoOrdinato (secondi [index].nome, tipo, pasto, id , data );
+                            break;
+        case 'contorno':    nuovoPiatto = new piattoOrdinato (contorni [index].nome, tipo, pasto, id , data );
+                            break;
+        case 'dolce':       nuovoPiatto = new piattoOrdinato (dolci [index].nome, tipo, pasto, id , data );
+                            break;
+    }
+    for(var i = 0; i < piattiOrdinati.length; i++){
+        if(piattiOrdinati[i].tipo == nuovoPiatto.tipo && piattiOrdinati[i].id == id){
+            piattiOrdinati[i].nome = nuovoPiatto.nome;
+            cambiato = true;
+        }
+    }
+    if(!cambiato)
+        piattiOrdinati.push(nuovoPiatto);
+}
+
+/* crea ordine definitivo cercando tra i vari piatti ordinati */
+function inserisciOrdine(data, id){
     var primo, secondo, contorno, dolce;
-    var id = piattiOrdinati[0].id;
     var pasto = piattiOrdinati[0].pasto;
     var trovato = false;
+    
     for(var i = 0; i < piattiOrdinati.length; i++){
-        switch(piattiOrdinati[i].tipo){
-            case 'primo':       primo = piattiOrdinati[i].nome;
-                                break;
-            case 'secondo':     secondo = piattiOrdinati[i].nome;
-                                break;
-            case 'contorno':    contorno = piattiOrdinati [i].nome;
-                                break;
-            case 'dolce':       dolce = piattiOrdinati[i].nome;
-                                break;
-            default:            break;
+        if ( piattiOrdinati[i].id == id){
+            switch(piattiOrdinati[i].tipo){
+                case 'primo':       primo = piattiOrdinati[i].nome;
+                                    break;
+                case 'secondo':     secondo = piattiOrdinati[i].nome;
+                                    break;
+                case 'contorno':    contorno = piattiOrdinati [i].nome;
+                                    break;
+                case 'dolce':       dolce = piattiOrdinati[i].nome;
+                                    break;
+                default:            break;
+            }
         }
     }
     
@@ -74,44 +119,12 @@ function inserisciOrdine(data){
         ordine.push(temp);
 }
 
-// crea un nuovo piatto con un nome, un url a una foto e un attributo che indica che tipo di piatto è (primo, seconodo, contorno o dolce)
-function Piatto (nome, foto, tipo) {
-	this.nome = nome;
-	this.foto = foto;
-    this.tipo = tipo;
-}
-
-/*crea un nuovo ordine con ID di chi lo ha ordinato, il nome del piatto ordinato e un attributo che indica che tipo di piatto è (primo, seconodo, contorno o    dolce) */
-function piattoOrdinato (id, nome, tipo,pasto){
-    this.id = id;
-    this.nome = nome;
-    this.tipo = tipo;
-    this.pasto = pasto;
-}
 
 
-function ordinaPiatto (id, index, tipo,pasto){
-    var nuovoPiatto = new piattoOrdinato ("","","","");
-    var cambiato = false;
-    switch(tipo){
-        case 'primo':       nuovoPiatto = new piattoOrdinato (id, primi [index].nome, tipo, pasto );
-                            break;
-        case 'secondo':     nuovoPiatto = new piattoOrdinato (id, secondi [index].nome, tipo, pasto );
-                            break;
-        case 'contorno':    nuovoPiatto = new piattoOrdinato (id, contorni [index].nome, tipo, pasto );
-                            break;
-        case 'dolce':       nuovoPiatto = new piattoOrdinato (id, dolci [index].nome, tipo, pasto );
-                            break;
-    }
-    for(var i = 0; i < piattiOrdinati.length; i++){
-        if(piattiOrdinati[i].tipo == nuovoPiatto.tipo){
-            piattiOrdinati[i].nome = nuovoPiatto.nome;
-            cambiato = true;
-        }
-    }
-    if(!cambiato)
-        piattiOrdinati.push(nuovoPiatto);
-}
+
+
+
+
 
 function getPrimi (){
     return primi;
