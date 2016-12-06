@@ -1,3 +1,6 @@
+/*
+* @author Piermaria Arvani
+*/
 //general lib
 var express = require('express');
 //parse URL
@@ -23,6 +26,9 @@ app.use('/scripts', express.static(__dirname+'/scripts/'));
 app.use('/foto', express.static(__dirname + '/foto/'));
 app.use('/styles/',express.static(__dirname + '/styles'));
 
+/*
+* inizializza headers
+*/
 function headers(){
     var headers = {};
     headers["Access-Control-Allow-Origin"] = "*"; //accetta richieste sia da node.js che da javascript
@@ -35,14 +41,17 @@ function headers(){
     return headers;
 }
 
-//mostra i piatti disponibili per una determinata tipologia (primi,secondi..) e ne fa scegliere uno.
+
+/*
+    mostra i piatti disponibili per una determinata tipologia (primi,secondi..) e ne fa scegliere uno.
+*/
 app.use('/scegli_piatto', function(request, response){var piatto1;
     var piatto2;
     var piatto3;
     var piatto4;
     var tipo;
     var pasto = request.body.pasto;
-    var data = request.body.data;
+    var data = request.body.data;   
     var id = request.body.id;                                              
     
     switch(request.body.submit){
@@ -91,7 +100,9 @@ app.use('/scegli_piatto', function(request, response){var piatto1;
 
 
 
-//mostra le portate e fa accederdere alle varie sezioni specifiche
+/*
+*  mostra le varie portate e fa accedere alle sezioni specifiche
+*/
 app.use('/scegli_portata', function(request, response){
     var pasto;
     var id = request.body.id;
@@ -109,7 +120,7 @@ app.use('/scegli_portata', function(request, response){
     }
    
     //bind to template
-	bind.toFile('tpl/scegli_portata.tpl', {pasto, data, id}, 
+	bind.toFile('tpl/scegli_portata.tpl', {id, data, pasto}, 
 		function(d){
 			response.writeHead(200, headers());
 			response.end(d);
@@ -118,21 +129,29 @@ app.use('/scegli_portata', function(request, response){
 });
 
 
-//fa scegliere tra pranzo e cena
+
+/*
+*  mostra la scelta tra pranzo e cena
+*/
 app.use('/pranzo_cena', function(request, response){
     var id = request.body.id;
+    var pasto = request.body.pasto;
     var data;
     
     if(request.body.submit == 'CONFERMA'){
-        manager.inserisciOrdine(data, id);
+        data = request.body.data;
+        manager.inserisciOrdine(data, id, pasto);
         console.log(manager.getOrdine());
-        
     }
     else{
-        var data = request.body.submit;
+        data = request.body.submit;
     }
+    
+    var pranzo = manager.controllaPranzo(id, data);
+    var cena = manager.controllaCena(id, data);
+    
     //bind to template
-	bind.toFile('tpl/pranzo_cena.tpl', {id, data}  , 
+	bind.toFile('tpl/pranzo_cena.tpl', {id, data, pranzo, cena}  , 
 		function(d){
 			response.writeHead(200, headers());
 			response.end(d);
@@ -140,14 +159,28 @@ app.use('/pranzo_cena', function(request, response){
 	);
 });
 
-
-app.use('/', function(request, response){
+/*
+*  mostra sei giorni a partire dal giorno stesso,
+*   i bottoni dei giorni risultano verdi se entrambi gli ordini per quella giornata sono stati completati
+*/
+app.use('/scegli_data', function(request, response){
 	var id = request.body.id;
     var giorni = manager.getNextDays(id, new Date(), 6);
     
     
     //bind to template
 	bind.toFile('tpl/scegli_data.tpl', {giorni:giorni}  , 
+		function(d){
+			response.writeHead(200, headers());
+			response.end(d);
+		}
+	);
+});
+
+app.use('/', function(request, response){
+	
+    //bind to template
+	bind.toFile('tpl/scegli_data.tpl', {}  , 
 		function(d){
 			response.writeHead(200, headers());
 			response.end(d);

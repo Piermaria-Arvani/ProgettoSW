@@ -5,11 +5,26 @@
     font-size: 200%;
 }
 
+
+
 #bottone_conferma{
+    width: 100%;
+    background-color: seagreen;
+    padding: 5%;
+    margin: 2% 0%;
+    font-size: 200%;
+}
+
+.non_prenotato {
+    width: 100%;
+    background-color: burlywood;
+    padding: 5%;
+    font-size: 200%;
+}
+.prenotato{
     width: 100%;
     background-color: forestgreen;
     padding: 5%;
-    margin: 2% 0%;
     font-size: 200%;
 }
 

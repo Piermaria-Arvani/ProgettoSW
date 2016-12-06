@@ -17,35 +17,37 @@
                 
                 <form method="POST" action="/scegli_piatto" >
                     <input type = "submit" class = "btn btn-default" value = "PRIMI" name = "submit" id="bottone">
-                    <input type = "hidden" name ="pasto" value="(: pasto :)">
                     <input type="hidden" name="id" value="(: id :)">
                     <input type="hidden" name="data" value="(: data :)">
+                    <input type = "hidden" name ="pasto" value="(: pasto :)">
                 </form>
                 
                 <form method="POST" action="/scegli_piatto" >
                     <input type ="submit" class="btn btn-default" value = "SECONDI" name = "submit" id="bottone">
-                    <input type = "hidden" name ="pasto" value="(: pasto :)">
                     <input type="hidden" name="id" value="(: id :)">
                     <input type="hidden" name="data" value="(: data :)">
+                    <input type = "hidden" name ="pasto" value="(: pasto :)">
                 </form>
 
                 <form method="POST" action="/scegli_piatto" >
                     <input type ="submit" class="btn btn-default" value = "CONTORNI" name = "submit" id="bottone">
-                    <input type = "hidden" name ="pasto" value="(: pasto :)">
                     <input type="hidden" name="id" value="(: id :)">
                     <input type="hidden" name="data" value="(: data :)">
+                    <input type = "hidden" name ="pasto" value="(: pasto :)">
                 </form>
 
                 <form method="POST" action="/scegli_piatto" >
                     <input type ="submit" class="btn btn-default" value = "DOLCI" name = "submit" id="bottone">
-                    <input type = "hidden" name ="pasto" value="(: pasto :)">
                     <input type="hidden" name="id" value="(: id :)">
                     <input type="hidden" name="data" value="(: data :)">
+                    <input type = "hidden" name ="pasto" value="(: pasto :)">
                 </form>
                 
                 <form method="POST" action="/pranzo_cena">
                     <input type ="submit" class="btn btn-default" value = "CONFERMA" name = "submit" id="bottone_conferma" >
                     <input type="hidden" name="id" value="(: id :)">
+                    <input type="hidden" name="data" value="(: data :)">
+                    <input type = "hidden" name ="pasto" value="(: pasto :)">
                 </form>
             </div>  
         </div> 

@@ -22,7 +22,7 @@
                             <input type="hidden" name="year" value="[: year :]">
                             <input type="hidden" name="month" value="[: month :]">
                             <input type="hidden" name="day" value="[:day:]">
-                             <input type ="submit" class="btn btn-default" value = "[: nome :] [: day :]/[: month :]" name = "submit" id="bottone">
+                             <input type ="submit" class= "[:class:]"  value = "[: nome :] [: day :]/[: month :]" name = "submit" >
                         </form>
                     </div>
                 :)
