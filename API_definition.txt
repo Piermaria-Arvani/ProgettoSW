@@ -1,0 +1,103 @@
+swagger: '2.0'
+info:
+  title: SE2 Project
+  description: definition of the api in the coursework
+  version: "1.0.0"
+host:  tobedefined.io
+schemes:
+  - https
+basePath: /
+produces:
+  - text
+consumes:
+  - application/json
+paths:
+  /support:
+    post:
+      summary: Contatta un Medico
+      description: Permette di inviare una domanda tramite textarea e visualizzare domande e risposte precedenti
+      parameters:
+        - name: id
+          in: formData
+          description: id of the actual user
+          required: true
+          type: integer
+        - name: text
+          in: formData
+          description: textarea input from the user as question
+          required: false
+          type: string
+      responses:
+        200:
+          description: Shows the support page
+        406:
+          description: Redirected to login page when id is not found
+  /profile:
+    post:
+      summary: Mostra le proprie informazioni personali
+      description: Permette di aggiornare peso, altezza, medicine assunte e allergie/intolleranze avute
+      parameters:
+        - name: id
+          in: formData
+          description: id of the actual user
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Shows the profile page
+        406:
+          description: Redirected to login page when id is not found
+
+  /home:
+    post:
+      summary: Mostra le proprie informazioni personali
+      description: Permette di aggiornare peso, altezza, medicine assunte e allergie/intolleranze avute
+      parameters:
+        - name: id
+          in: formData
+          description: id of the actual user
+          required: true
+          type: integer
+        - name: username
+          in: formData
+          description: username prompted for login
+          required: false
+          type: string
+        - name: password
+          in: formData
+          description: password prompted for login
+          required: false
+          type: string
+        - name: h
+          in: formData
+          description: altezza dell'utente
+          required: false
+          type: integer
+        - name: w
+          in: formData
+          description: peso dell'utente
+          required: false
+          type: integer
+        - name: current_medicines
+          in: formData
+          description: medicine assunte
+          required: false
+          type: string
+        - name: current_allergies
+          in: formData
+          description: allergie avute
+          required: false
+          type: string
+      responses:
+        200:
+          description: Shows the profile page
+        406:
+          description: Redirected to login page when id is not found
+  /:
+    get:
+      summary: Mostra la pagina di login
+      description: Permette di accedere inserendo username e password
+      responses:
+        200:
+          description: Shows the profile page
+  

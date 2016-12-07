@@ -1,25 +1,33 @@
 {
-  "name": "progetto",
+  "name": "SE2_16_173524_L4",
   "version": "1.0.0",
-  "description": "sviluppo feature per ordinare piatti",
+  "description": "Per installare e utilizzare l'applicativo utilizzare la funzione di npm per installare automaticamente i moduli necessari tramite il package.json",
   "main": "index.js",
-  "dependencies": {
-    "bind": "^0.1.7",
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0"
-  },
-  "devDependencies": {},
   "scripts": {
-    "test": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RefPier/ProgettoSW.git"
+    "url": "git+https://github.com/DavideSK3/SE2_16_173524_L4.git"
   },
-  "author": "Piermaria Arvani",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RefPier/ProgettoSW/issues"
+    "url": "https://github.com/DavideSK3/SE2_16_173524_L4/issues"
   },
-  "homepage": "https://github.com/RefPier/ProgettoSW#readme"
+  "homepage": "https://github.com/DavideSK3/SE2_16_173524_L4#readme",
+  "dependencies": {
+    "bind": "^0.1.7",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jasmine": "^2.5.2",
+    "jshint": "^2.9.4",
+    "request": "^2.79.0",
+    "util": "^0.10.3"
+  },
+  "jshintConfig": {
+    "undef": true,
+    "unused": true
+  }
 }

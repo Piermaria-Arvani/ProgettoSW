@@ -9,8 +9,8 @@
         <title>Ordina il tuo pasto</title>
     </head>
     <body>
-        <div class="container col-md-6 col-md-offset-3" style = "text-align: center">
-            <div class="jumbotron"> 
+        <div class="container col-md-6 col-md-offset-3 mydiv" style = "text-align: center">
+            <div style="margin-top: 20%"> 
                 <form method="POST" action="/scegli_portata" >
                     <input type="hidden" name="id" value="(: id :)">
                     <input type="hidden" name="data" value="(: data :)">
@@ -23,7 +23,7 @@
                 </form>
                 
                 <form method="POST" action="/scegli_data">
-                    <input type ="submit" class="btn btn-default" value = "CONFERMA" name = "submit" id="bottone_conferma">
+                    <input type ="submit" class="green_button" value = "CONFERMA" name = "submit" >
                     <input type="hidden" name="id" value="(: id :)">
                 </form>
             </div>  

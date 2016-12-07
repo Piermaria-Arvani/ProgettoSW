@@ -1,272 +1,202 @@
-/*
-* @author Piermaria Arvani
-*/
-//lista dei primi disponibili
-var primi =[
-            new Piatto ("Pasta al pomodoro", "./foto/spaghetti-al-pomodoro.jpg", "primo"),
-            new Piatto ("Canederli", "./foto/canederli.jpg", "primo"),
-            new Piatto ("Minestrina", "./foto/minestrina.jpg", "primo" ),
-            new Piatto ("Brodo di verdura", "./foto/brodo-verdure.jpg", "primo" )
-];
+/*Methods for Contructor of data types, and for getting/setting the values of those objects
+ */
 
-//lista dei secondi disponibili
-var secondi =[
-            new Piatto ("Pollo lesso", "./foto/pollo-lesso.jpg", "secondo"),
-            new Piatto ("Affettato", "./foto/affettati.jpg", "secondo"),
-            new Piatto ("Formaggio", "./foto/formaggi.jpg", "secondo" ),
-            new Piatto ("Tonno all'olio", "./foto/tonno.jpg", "secondo" )
-];
+//Nomi delle medicine e allergie
+var medicine = ["Statine","Anticoagulanti","Antibiotici","Antistaminici","Fans","Benzodiazepine"];
+var allergie = ["Lattosio","Glutine","Uova","Legumi","Noci"];
 
-//lista dei contorni disponibili
-var contorni =[
-            new Piatto ("Patate bollite", "./foto/patate-bollite.jpg", "contorno"),
-            new Piatto ("Carote al tegame", "./foto/carote.jpg", "contorno"),
-            new Piatto ("Spinaci", "./foto/spinaci.jpg", "contorno" ),
-            new Piatto ("Verdura fresca", "./foto/verdura.jpg", "contorno" )
-];
-
-//lista dei dolci disponibili
-var dolci =[
-            new Piatto ("Frutta di stagione", "./foto/macedonia.jpg", "dolci"),
-            new Piatto ("Mousse di frutta ", "./foto/mouse.jpg", "dolci"),
-            new Piatto ("Panna cotta", "./foto/panna-cotta.jpg", "dolci" ),
-            new Piatto ("Crostata", "./foto/crostata.jpg", "dolci" )
-];
-
-var nome_giorni = ['Domenica', 'Lunedi', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-var piattiOrdinati = [];
-var ordine = [];
-
-//  piatto con un nome, un url a una foto e un attributo che indica che tipo di piatto si tratta (primo, seconodo, contorno o dolce)
-function Piatto (nome, foto, tipo) {
-	this.nome = nome;
-	this.foto = foto;
-    this.tipo = tipo;
+//Costruttori
+function User(id,username,password){
+    this.id=id;
+    this.username=username;
+    this.password=password;
 }
-
-/* piatto ordinato
-* @param nome del piatto ordinato 
-* @param tipo  indica che tipo di piatto si tratta  (primo, seconodo, contorno o dolce) 
-* @param pasto indica se è stato ordinato per pranzo o cena
-* @param ID di chi lo ha ordinato
-* @param data per cui è sato ordinato
-*/
-function piattoOrdinato (nome, tipo, pasto, id , data){
-    this.nome = nome;
-    this.tipo = tipo;
-    this.pasto = pasto;
+function Profile(id,h,w){
+    this.id=id;
+    this.h=h;
+    this.w=w;
+}
+function Medicines(id){
     this.id = id;
-    this.data = data;
+    this.medicine_array=[];
+    for(var i=0;i<medicine.length;i++) {
+        (this.medicine_array).push("");
+    }
 }
-
-/* 
-* ordine definitivo
-*/
-function Ordine (id, data, pasto, primo, secondo, contorno, dolce){
+function Allergies(id){
     this.id = id;
-    this.data = data;
-    this.pasto = pasto;
-    this.primo = primo;
-    this.secondo = secondo;
-    this.contorno = contorno;
-    this.dolce = dolce;
+    this.allergie_array=[];
+    for(var i=0;i<allergie.length;i++) {
+        (this.allergie_array).push("");
+    }
+}
+function QnA(id,q,a){
+    this.id=id;
+    this.q=q;
+    if(a==""){
+        this.a="in attesa di risposta";
+    } else {
+        this.a = a;
+    }
 }
 
 
-/*inserisce un piatto ordinato in piattiOrdinati 
-* @param index posizione nel html del piatto selezionato
-* @param index posizione nel html del piatto selezionato
-* @param tipo  indica che tipo di piatto si tratta  (primo, seconodo, contorno o dolce) 
-* @param pasto indica se è stato ordinato per pranzo o cena
-* @param ID di chi lo ha ordinato
-* @param data per cui è sato ordinato
-*/
-function ordinaPiatto (index, tipo, pasto, id , data){
-    var nuovoPiatto = new piattoOrdinato ("","","","", "", "");
-    var cambiato = false;
-    switch(tipo){
-        case 'primo':       nuovoPiatto = new piattoOrdinato (primi [index].nome, tipo, pasto, id , data );
-                            break;
-        case 'secondo':     nuovoPiatto = new piattoOrdinato (secondi [index].nome, tipo, pasto, id , data );
-                            break;
-        case 'contorno':    nuovoPiatto = new piattoOrdinato (contorni [index].nome, tipo, pasto, id , data );
-                            break;
-        case 'dolce':       nuovoPiatto = new piattoOrdinato (dolci [index].nome, tipo, pasto, id , data );
-                            break;
-        default:            break;
-    }
-    for(var i = 0; i < piattiOrdinati.length; i++){
-        if(piattiOrdinati[i].tipo == nuovoPiatto.tipo && piattiOrdinati[i].id == id && piattiOrdinati[i].pasto == pasto){
-            piattiOrdinati[i].nome = nuovoPiatto.nome;
-            cambiato = true;
+//Funzione di inizializzazione delle strutture dati, chiamata all'avvio del server
+function init(users,profiles,qnas,medicines,allergies,id,username,password){
+    users.push(new User(id,username,password));
+    profiles.push(new Profile(id,"0","0"));
+    medicines.push(new Medicines(id));
+    allergies.push(new Allergies(id));
+}
+
+//returns the id for the login couple, an empty string if login is invalid
+function findUserID(users,username,password) {
+    id = "";
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].username == username && users[i].password == password) {
+            id = users[i].id;
         }
     }
-    if(!cambiato)
-        piattiOrdinati.push(nuovoPiatto);
+    return id;
 }
 
-/* crea ordine definitivo cercando tra i vari piatti ordinati 
-* @param pasto indica se è stato ordinato per pranzo o cena
-* @param ID di chi lo ha ordinato
-* @param data per cui è sato ordinato
-*/
-function inserisciOrdine(data, id, pasto){
-    var primo, secondo, contorno, dolce;
-    var trovato = false; // indica se esiste già un ordine per quella data, quel pasto, quell'id 
-    var presente = false; // indica se c'è almeno un piatto ordinato per quel pasto
-  	var i;
-    for(i = 0; i < piattiOrdinati.length; i++){
-        if ( piattiOrdinati[i].id == id && piattiOrdinati[i].pasto == pasto && piattiOrdinati[i].data == data ){
-            switch(piattiOrdinati[i].tipo){
-                case 'primo':       primo = piattiOrdinati[i].nome;
-                                    presente = true;
-                                    break;
-                case 'secondo':     secondo = piattiOrdinati[i].nome;
-                                    presente = true;
-                                    break;
-                case 'contorno':    contorno = piattiOrdinati [i].nome;
-                                    presente = true;
-                                    break;
-                case 'dolce':       dolce = piattiOrdinati[i].nome;
-                                    presente = true;
-                                    break;
-                default:            break;
+//returns the usenrname for the user with the defined id
+function findUsername(users,id) {
+    username = "";
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].id == id) {
+            username = users[i].username;
+        }
+    }
+    return username;
+}
+
+function findH(profiles,id) {
+    h=0;
+    for (var i = 0; i < profiles.length; i++) {
+        if (profiles[i].id==id) {
+            h = profiles[i].h;
+        }
+    }
+    return h;
+}
+
+function findW(profiles,id) {
+    w=0;
+    for (var i = 0; i < profiles.length; i++) {
+        if (profiles[i].id==id) {
+            w = profiles[i].w;
+        }
+    }
+    return w;
+}
+
+//returns all QNAs with the expected ID
+function findQnas(qnas,id){
+    var qnas_current=[];
+    for (var i = qnas.length-1; i >=0; i--) {
+        if (qnas[i].id == id) {
+            qnas_current.push(qnas[i]);
+        }
+    }
+    return qnas_current;
+}
+
+//updates height and weigth for the user with the specified id
+function updateProfile(profiles,id,h,w){
+    for (var i = 0; i < profiles.length; i++) {
+        if (profiles[i].id==id) {
+            if(!isNaN(h)) {
+                profiles[i].h = parseFloat(h);
+            }else{
+                profiles[i].h=0;
+            }
+            if(!isNaN(w)) {
+                profiles[i].w = parseFloat(w);
+            }else{
+                profiles[i].w=0;
             }
         }
     }
-    if (presente){
-        var temp =new Ordine(id, data, pasto, primo, secondo, contorno, dolce);
+}
 
-        for(i = 0; i < ordine.length; i++){
-            if(temp.data == ordine[i].data && temp.pasto == ordine[i].pasto && temp.id == ordine[i].id){
-                trovato = true;
-                ordine [i].primo = temp.primo;
-                ordine [i].secondo = temp.secondo;
-                ordine [i].contorno = temp.contorno;
-                ordine [i].dolce = temp.dolce;
+//updates the medicines datastructure for the user with the specified id
+function updateMeds(medicines,id,current_medicines){
+    for(var i=0;i<medicines.length;i++){
+        if(medicines[i].id=id){
+
+            for(var j=0;j<medicines[i].medicine_array.length;j++){
+                medicines[i].medicine_array[j]="";
             }
-        }
+            if(typeof current_medicines!='undefined') {
+                for (var j = 0; j < current_medicines.length; j++) {
+                    medicines[i].medicine_array[current_medicines[j]] = "selected";
+                }
+            }
 
-        if (!trovato){
-            ordine.push(temp);
         }
     }
 }
 
+//updates the allergies datastructure for the user with the specified id
+function updateAller(allergies,id,current_allergies){
+    for(var i=0;i<allergies.length;i++){
+        if(allergies[i].id=id){
 
-function followingDay (day, n){
-    var date = new Date(day);
-    date.setDate(day.getDate()+n);
-    return date;
-}
+            for(var j=0;j<allergies[i].allergie_array.length;j++){
+                allergies[i].allergie_array[j]="";
+            }
+            if(typeof current_allergies!='undefined') {
+                for (var j = 0; j < current_allergies.length; j++) {
+                    allergies[i].allergie_array[current_allergies[j]] = "selected";
+                }
+            }
 
-/* crea la lista dei giorni da visualizzare */
-function getNextDays( id, today , n){
-    var giorni = [];
-    var stringa;
-    giorni.push({
-        nome: nome_giorni[today.getDay()],
-        day: today.getDate(),
-        month: today.getMonth()+1,
-        year: today.getYear(),
-        class: "non_prenotato"
-    });
-    stringa = giorni[0].nome + " " + giorni[0].day + "/" + giorni[0].month;
-    giorni[0].class = (!controllaOrdinazioni(id,stringa))? "non_prenotato" : "prenotato";
-    
-    for(var i = 1; i < n; i++){
-        var date = followingDay(today,i);
-        
-        giorni.push({
-            nome: nome_giorni[date.getDay()],
-            day: date.getDate(),
-            month: date.getMonth()+1,
-            year: date.getYear(),
-            class: "non_prenotato"
-        });
-        stringa = giorni[i].nome + " " + giorni[i].day + "/" + giorni[i].month;
-        giorni[i].class = (!controllaOrdinazioni(id, stringa))? "non_prenotato" : "prenotato";
+        }
     }
-    
-    return giorni;
 }
 
-/*controlla se per un giorno vi sono si a l'ordine del pranzo che della cena */
-function controllaOrdinazioni (id , today ) {
-    var pranzo_ordinato = false;
-    var cena_ordinata =  false;
-    for(var i = 0; i < ordine.length; i++){
-        if(today == ordine[i].data && id == ordine[i].id){
-            if(ordine[i].pasto == "PRANZO"){
-                pranzo_ordinato = true;
-            }else if(ordine[i].pasto == "CENA"){
-                cena_ordinata = true;
+//returns the complex object formed by index, name and "selected" or "" that will be used in the array binding for the medicines
+function bind_medicine (medicine_id,id){
+    var bind_return=[];
+    for(var j=0;j<medicine_id.length;j++) {
+        if (medicine_id[j].id == id) {
+            for (var i = 0; i < medicine.length; i++) {
+                bind_return.push({num: i, sel: medicine_id[j].medicine_array[i], name: medicine[i]});
             }
         }
     }
-    return (pranzo_ordinato && cena_ordinata);
+    return bind_return;
 }
 
-function controllaPasti(id, data, flag){
-    var pasto;
-    if (flag == 0){
-        pasto = 'PRANZO';
-        for(var i = 0; i < ordine.length; i++){
-            if(data == ordine[i].data && id == ordine[i].id && ordine[i].pasto == pasto){
-                return true;
-            }
-        }
-    }else{
-        pasto = 'CENA';
-        for(var i = 0; i < ordine.length; i++){
-            if(data == ordine[i].data && id == ordine[i].id && ordine[i].pasto == pasto){
-                return true;
+//returns the complex object formed by index, name and "selected" or "" that will be used in the array binding for the allergies
+function bind_allergie (allergie_id,id){
+    var bind_return=[]
+    for(var j=0;j<allergie_id.length;j++) {
+        if (allergie_id[j].id == id) {
+            for (var i = 0; i < allergie.length; i++) {
+                bind_return.push({num: i, sel: allergie_id[j].allergie_array[i], name: allergie[i]});
             }
         }
     }
-    return false;
-}
-/*controlla se per quel pranzo ci sono ordinazioni e assegna il tipo di bottone corretto */
-function controllaPranzo(id, data){
-    return (!controllaPasti (id, data, 0))? "non_prenotato": "prenotato";
-}
-/*controlla se per quella cena ci sono ordinazioni */
-function controllaCena(id, data){
-    return (!controllaPasti (id, data, 1))? "non_prenotato": "prenotato";
-}
-
-function getPrimi (){
-    return primi;
-}
-function getSecondi (){
-    return secondi;
-}
-function getContorni (){
-    return contorni;
-}
-function getDolci (){
-    return dolci;
-}
-
-function getPiattiOrdinati(){
-    return piattiOrdinati;
-}
-function getOrdine(){
-    return ordine;
+    return bind_return;
 }
 
 
-
-
-exports.ordinaPiatto = ordinaPiatto;
-exports.getPrimi = getPrimi;
-exports.getSecondi = getSecondi;
-exports.getContorni = getContorni;
-exports.getDolci = getDolci;
-exports.getPiattiOrdinati = getPiattiOrdinati;
-exports.getOrdine = getOrdine;
-exports.inserisciOrdine = inserisciOrdine;
-exports.getNextDays = getNextDays;
-exports.controllaPranzo = controllaPranzo;
-exports.controllaCena = controllaCena;
-
+//Exports
+exports.init = init;
+exports.User = User;
+exports.Profile = Profile;
+exports.QnA = QnA;
+exports.Medicines = Medicines;
+exports.Allergies = Allergies;
+exports.findQnas = findQnas;
+exports.bind_medicine = bind_medicine;
+exports.updateMeds = updateMeds;
+exports.updateAller = updateAller;
+exports.bind_allergie = bind_allergie;
+exports.findUserID = findUserID;
+exports.findUsername = findUsername;
+exports.updateProfile = updateProfile;
+exports.findH = findH;
+exports.findW = findW;
